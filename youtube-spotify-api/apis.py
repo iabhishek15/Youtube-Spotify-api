@@ -47,7 +47,6 @@ while True:
         video_id = item['contentDetails']['videoId']
         vid_ids.append(video_id)
 
-    #print(','.join(vid_ids))
 
     vid_request = youtube.videos().list(
         part = "contentDetails",
@@ -56,15 +55,12 @@ while True:
     vid_response = vid_request.execute()
     for item in vid_response['items']:
         duration = item['contentDetails']['duration']
-        #print(duration)
         hours = hours_pattern.search(duration)
         minutes = minutes_pattern.search(duration)
         seconds = seconds_pattern.search(duration)
-        #print(hours, minutes, seconds)
         minutes = int(minutes.group(1)) if minutes else 0
         seconds = int(seconds.group(1)) if seconds else 0
         hours = int(hours.group(1)) if hours else 0
-        #print(minutes,seconds, hours)
         video_seconds = timedelta(
             hours = hours,
             minutes = minutes,
@@ -75,7 +71,6 @@ while True:
     if not next_page_token:
         break
 
-#print(total_seconds)
 hours = int(total_seconds / 3600)
 minutes = int((total_seconds - hours * 3600) / 60)
 seconds = int(total_seconds - hours * 3600 - minutes * 60)
